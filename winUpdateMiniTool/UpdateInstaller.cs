@@ -159,7 +159,7 @@ internal class UpdateInstaller {
 
       var file = curFile;
 
-      AppLog.Line("Installing: {0}", file);
+      AppLog.Line("正在安装：{0}", file);
 
       try {
         var ext = Path.GetExtension(file);
@@ -176,7 +176,7 @@ internal class UpdateInstaller {
               .Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
           IEnumerable<string> enumerable = foundFiles as string[] ?? foundFiles.ToArray();
           if (!enumerable.Any())
-            throw new FileNotFoundException("Expected file not found in zip");
+            throw new FileNotFoundException("在 zip 压缩包中未找到预期的文件");
 
           file = enumerable.First();
           ext = Path.GetExtension(file);
@@ -196,13 +196,13 @@ internal class UpdateInstaller {
         else if (ext.Equals(".cab", StringComparison.CurrentCultureIgnoreCase))
           exitCode = InstallCab(file);
         else
-          throw new FileFormatException("Unknown Update format: " + ext);
+          throw new FileFormatException("未知的更新格式：" + ext);
 
         if (exitCode == 3010) {
           reboot = true; // reboot required
         }
         else if (exitCode == 1641) {
-          AppLog.Line("Error, reboot got initiated: {0}", file);
+          AppLog.Line("错误：已发起重启：{0}", file);
           reboot = true; // reboot initiated
           ok = false;
         }
@@ -212,7 +212,7 @@ internal class UpdateInstaller {
       }
       catch (Exception e) {
         ok = false;
-        Console.WriteLine(@"Error installing update: {0}", e.Message);
+        Console.WriteLine(@"安装更新出错：{0}", e.Message);
       }
     }
 
@@ -311,7 +311,7 @@ internal class UpdateInstaller {
       }
     }
     catch (Exception e) {
-      Console.WriteLine(@"Dism error: {0}", e.Message);
+      Console.WriteLine(@"Dism 出错：{0}", e.Message);
     }
 
     return false;
@@ -370,7 +370,7 @@ internal class UpdateInstaller {
   private void RunUnInstall(object parameters) {
     var kb = (string)parameters;
 
-    AppLog.Line("Uninstalling: {0}", kb);
+    AppLog.Line("正在卸载：{0}", kb);
 
     var ok = true;
     var reboot = false;
@@ -391,13 +391,13 @@ internal class UpdateInstaller {
         reboot = true;
       }
       else if (exitCode != 1 && exitCode != 0) {
-        AppLog.Line("Error, exit coded: {0}", exitCode);
+        AppLog.Line("错误，退出码：{0}", exitCode);
         ok = false; // some error
       }
     }
     catch (Exception e) {
       ok = false;
-      Console.WriteLine(@"Error removing update: {0}", e.Message);
+      Console.WriteLine(@"卸载更新出错：{0}", e.Message);
     }
 
     mDispatcher.BeginInvoke(

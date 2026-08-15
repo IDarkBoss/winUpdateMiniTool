@@ -55,22 +55,22 @@ internal partial class MainForm : Form {
     if (!OSHelper.IsRunningAsUwp())
       Text = Updater.ApplicationTitle;
 
-    btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
-    btnInstalled.Text = string.Format("Installed Updates ({0})", 0);
-    btnHidden.Text = string.Format("Hidden Updates ({0})", 0);
-    btnHistory.Text = string.Format("Update History ({0})", 0);
+    btnWinUpd.Text = string.Format("Windows 更新 ({0})", 0);
+    btnInstalled.Text = string.Format("已安装更新 ({0})", 0);
+    btnHidden.Text = string.Format("已隐藏更新 ({0})", 0);
+    btnHistory.Text = string.Format("更新历史 ({0})", 0);
 
-    toolTip.SetToolTip(btnSearch, "Search");
-    toolTip.SetToolTip(btnInstall, "Install");
-    toolTip.SetToolTip(btnDownload, "Download");
-    toolTip.SetToolTip(btnHide, "Hide");
-    toolTip.SetToolTip(btnGetLink, "Get Links");
-    toolTip.SetToolTip(btnUnInstall, "Uninstall");
-    toolTip.SetToolTip(btnCancel, "Cancel");
+    toolTip.SetToolTip(btnSearch, "搜索");
+    toolTip.SetToolTip(btnInstall, "安装");
+    toolTip.SetToolTip(btnDownload, "下载");
+    toolTip.SetToolTip(btnHide, "隐藏");
+    toolTip.SetToolTip(btnGetLink, "获取下载链接");
+    toolTip.SetToolTip(btnUnInstall, "卸载");
+    toolTip.SetToolTip(btnCancel, "取消");
 
     AppLog.Logger += LineLogger;
     var cm = new ContextMenuStrip();
-    cm.Items.Add(new ToolStripMenuItem("Copy", null, (s, ev) => {
+    cm.Items.Add(new ToolStripMenuItem("复制", null, (s, ev) => {
       logBox.Copy();
     }));
     logBox.ContextMenuStrip = cm;
@@ -85,7 +85,7 @@ internal partial class MainForm : Form {
     agent.Finished += OnFinished;
 
     if (!agent.IsActive())
-      if (MessageBox.Show("Windows Update Service is not available, try to start it?", Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+      if (MessageBox.Show("Windows Update 服务不可用，是否尝试启动它？", Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
         agent.EnableWuAuServ();
         agent.Init();
       }
@@ -103,7 +103,7 @@ internal partial class MainForm : Form {
     if (mGpoRespect == Gpo.Respect.Partial || mGpoRespect == Gpo.Respect.None)
       radSchedule.Enabled = radDownload.Enabled = radNotify.Enabled = false;
     else if (mGpoRespect == Gpo.Respect.Unknown)
-      AppLog.Line("Unrecognized Windows Edition, respect for GPO settings is unknown.");
+      AppLog.Line("无法识别的 Windows 版本，组策略设置的兼容性未知。");
 
     if (mGpoRespect == Gpo.Respect.None)
       chkBlockMS.Enabled = false;
@@ -207,7 +207,7 @@ internal partial class MainForm : Form {
 
     try {
       lastCheck = DateTime.Parse(GetConfig("LastCheck"));
-      AppLog.Line("Last Checked for updates: {0}",
+      AppLog.Line("上次检查更新时间：{0}",
           lastCheck.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern));
     }
     catch {
@@ -225,13 +225,13 @@ internal partial class MainForm : Form {
       gbxAutoUpdate.Enabled = false;
 
     notifyIcon.ContextMenuStrip = new ContextMenuStrip();
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Show/Hide", null, notifyIcon1_MouseDoubleClick));
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("显示/隐藏", null, notifyIcon1_MouseDoubleClick));
     notifyIcon.ContextMenuStrip.Items.Add("-");
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Site", null, siteToolStripMenuItem_Click));
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Check for new version", null, checkForNewVersionToolStripMenuItem_Click));
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, aboutToolStripMenuItem_Click));
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("官方网站", null, siteToolStripMenuItem_Click));
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("检查新版本", null, checkForNewVersionToolStripMenuItem_Click));
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("关于", null, aboutToolStripMenuItem_Click));
     notifyIcon.ContextMenuStrip.Items.Add("-");
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, menuExit_Click));
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("退出", null, menuExit_Click));
 
     BuildToolsMenu();
 
@@ -343,14 +343,14 @@ internal partial class MainForm : Form {
         // ensure we only start a check when user is not doing anything
         var idleTime = OSHelper.GetIdleTime();
         if (idleDelay * 60 < idleTime) {
-          AppLog.Line("Starting automatic search for updates.");
+          AppLog.Line("开始自动检查更新。");
           updateNow = true;
         }
         else if (daysDue > GetGraceDays()) {
           if (lastBalloon < DateTime.Now.AddHours(-4)) {
             lastBalloon = DateTime.Now;
-            notifyIcon.ShowBalloonTip(int.MaxValue, "Please Check For Updates",
-              $"{Updater.ApplicationTitle} couldn't check for updates for {daysDue} days, please check for updates manually and resolve possible issues", ToolTipIcon.Warning);
+            notifyIcon.ShowBalloonTip(int.MaxValue, "请检查更新",
+              $"{Updater.ApplicationTitle} 已有 {daysDue} 天未能检查更新，请手动检查更新并解决可能存在的问题", ToolTipIcon.Warning);
           }
         }
       }
@@ -358,8 +358,8 @@ internal partial class MainForm : Form {
       if (agent.MPendingUpdates.Count > 0)
         if (lastBalloon < DateTime.Now.AddHours(-4)) {
           lastBalloon = DateTime.Now;
-          notifyIcon.ShowBalloonTip(int.MaxValue, "New Updates found",
-              string.Format("{0} has found {1} new updates, please review the updates and install them", Updater.ApplicationTitle,
+          notifyIcon.ShowBalloonTip(int.MaxValue, "发现新更新",
+              string.Format("{0} 发现 {1} 个新更新，请查看并安装", Updater.ApplicationTitle,
                   string.Join(Environment.NewLine, agent.MPendingUpdates.Select(x => $"- {x.Title}"))),
               ToolTipIcon.Info);
         }
@@ -446,10 +446,10 @@ internal partial class MainForm : Form {
   }
 
   private void UpdateCounts() {
-    btnWinUpd.Text = string.Format("Windows Update ({0})", agent.MPendingUpdates.Count);
-    btnInstalled.Text = string.Format("Installed Updates ({0})", agent.MInstalledUpdates.Count);
-    btnHidden.Text = string.Format("Hidden Updates ({0})", agent.MHiddenUpdates.Count);
-    btnHistory.Text = string.Format("Update History ({0})", agent.MUpdateHistory.Count);
+    btnWinUpd.Text = string.Format("Windows 更新 ({0})", agent.MPendingUpdates.Count);
+    btnInstalled.Text = string.Format("已安装更新 ({0})", agent.MInstalledUpdates.Count);
+    btnHidden.Text = string.Format("已隐藏更新 ({0})", agent.MHiddenUpdates.Count);
+    btnHistory.Text = string.Format("更新历史 ({0})", agent.MUpdateHistory.Count);
   }
 
   private void LoadList() {
@@ -484,12 +484,12 @@ internal partial class MainForm : Form {
       switch (update.State) {
         case MsUpdate.UpdateState.History:
           state = (OperationResultCode) update.ResultCode switch {
-            OperationResultCode.orcNotStarted => "Not Started",
-            OperationResultCode.orcInProgress => "In Progress",
-            OperationResultCode.orcSucceeded => "Succeeded",
-            OperationResultCode.orcSucceededWithErrors => "Succeeded with Errors",
-            OperationResultCode.orcFailed => "Failed",
-            OperationResultCode.orcAborted => "Aborted",
+            OperationResultCode.orcNotStarted => "未开始",
+            OperationResultCode.orcInProgress => "进行中",
+            OperationResultCode.orcSucceeded => "成功",
+            OperationResultCode.orcSucceededWithErrors => "成功但有错误",
+            OperationResultCode.orcFailed => "失败",
+            OperationResultCode.orcAborted => "已中止",
             _ => state
           };
 
@@ -499,34 +499,34 @@ internal partial class MainForm : Form {
 
         default:
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Beta) != 0)
-            state = "Beta ";
+            state = "测试版 ";
 
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Installed) != 0) {
-            state += "Installed";
+            state += "已安装";
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Uninstallable) != 0)
-              state += " Removable";
+              state += " 可卸载";
           }
           else if ((update.Attributes & (int)MsUpdate.UpdateAttr.Hidden) != 0) {
-            state += "Hidden";
+            state += "已隐藏";
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Downloaded) != 0)
-              state += " Downloaded";
+              state += " 已下载";
           }
           else {
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Downloaded) != 0)
-              state += "Downloaded";
+              state += "已下载";
             else
-              state += "Pending";
+              state += "待处理";
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.AutoSelect) != 0)
               state += " (!)";
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Mandatory) != 0)
-              state += " Mandatory";
+              state += " 必装";
           }
 
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Exclusive) != 0)
-            state += ", Exclusive";
+            state += "，独占";
 
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Reboot) != 0)
-            state += ", Needs Reboot";
+            state += "，需重启";
           break;
       }
 
@@ -605,8 +605,8 @@ internal partial class MainForm : Form {
     suspendChange = false;
 
     updateView.Columns[2].Text = currentList == UpdateLists.UpdateHistory
-        ? "Application ID"
-        : "KB Article";
+        ? "应用程序 ID"
+        : "KB 编号";
 
     LoadList();
 
@@ -640,7 +640,7 @@ internal partial class MainForm : Form {
 
   private void BuildToolsMenu() {
     toolsToolStripMenuItem.DropDownItems.Clear();
-    wuauMenu = new ToolStripMenuItem("Windows Update Service", null, menuWuAu_Click);
+    wuauMenu = new ToolStripMenuItem("Windows Update 服务", null, menuWuAu_Click);
     wuauMenu.Checked = agent.TestWuAuServ();
     toolsToolStripMenuItem.DropDownItems.Add(wuauMenu);
     toolsToolStripMenuItem.DropDownItems.Add("-");
@@ -685,14 +685,14 @@ internal partial class MainForm : Form {
       toolsToolStripMenuItem.DropDownItems.Add("-");
     }
 
-    toolsToolStripMenuItem.DropDownItems.Add(new ToolStripMenuItem("&Refresh", null, menuRefresh_Click));
+    toolsToolStripMenuItem.DropDownItems.Add(new ToolStripMenuItem("刷新(&R)", null, menuRefresh_Click));
   }
 
   private void menuExec_Click(object sender, EventArgs e, string exec, string dir, bool silent = false) {
     var startInfo = Program.PrepExec(exec, silent);
     startInfo.WorkingDirectory = dir;
     if (!Program.DoExec(startInfo))
-      MessageBox.Show("Failed to start tool", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      MessageBox.Show("工具启动失败", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
   }
 
   private void menuExit_Click(object sender, EventArgs e) {
@@ -710,7 +710,7 @@ internal partial class MainForm : Form {
   }
 
   private void menuClean_Click(object sender, EventArgs e) {
-    SetControlsState(false, "Cleaning Windows Update cache...");
+    SetControlsState(false, "正在清理更新缓存...");
     Task.Run(CleanCache);
   }
 
@@ -730,16 +730,16 @@ internal partial class MainForm : Form {
         FileOps.SafeDeleteFolder(CachePath);
       }
       catch (Exception ex) {
-        LineLogger(null, new AppLog.LogEventArgs($"Error cleaning updates cache: {ex.Message}"));
+        LineLogger(null, new AppLog.LogEventArgs($"清理更新缓存出错：{ex.Message}"));
       }
     }
     SetControlsState(true);
-    LineLogger(null, new AppLog.LogEventArgs($"Windows Update cache cleaned, freed {FileOps.FormatSize(freedBytes)}"));
+    LineLogger(null, new AppLog.LogEventArgs($"更新缓存已清理，释放了 {FileOps.FormatSize(freedBytes)} 空间"));
     return Task.CompletedTask;
   }
 
   private void menuOptimize_Click(object sender, EventArgs e) {
-    SetControlsState(false, "Windows kernel optimization...");
+    SetControlsState(false, "正在优化系统体积...");
     Task.Run(OptimizeKernel);
   }
 
@@ -754,9 +754,9 @@ compact.exe /CompactOS:always";
       });
     }
     catch (Exception ex) {
-      LineLogger(null, new AppLog.LogEventArgs($"Error optimizing kernel: {ex.Message}"));
+      LineLogger(null, new AppLog.LogEventArgs($"系统体积优化出错：{ex.Message}"));
     }
-    LineLogger(null, new AppLog.LogEventArgs($"Windows kernel optimization finished."));
+    LineLogger(null, new AppLog.LogEventArgs($"系统体积优化完成。"));
     SetControlsState(true);
   }
 
@@ -778,7 +778,7 @@ compact.exe /CompactOS:always";
 
     dlAutoCheck.SelectedIndex = 0;
 
-    MessageBox.Show("Default settings restored.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+    MessageBox.Show("已恢复默认设置。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
   }
 
   private void SetControlsState(bool enabled, string status = null) {
@@ -848,7 +848,7 @@ compact.exe /CompactOS:always";
 
   private void btnDownload_Click(object sender, EventArgs e) {
     if (!chkManual.Checked && !OSHelper.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to download updates using windows update services. Use 'Manual' download instead.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("使用 Windows Update 服务下载更新需要管理员权限。请改用\"手动\"下载。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -862,7 +862,7 @@ compact.exe /CompactOS:always";
 
   private void btnInstall_Click(object sender, EventArgs e) {
     if (!OSHelper.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to install updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("安装更新需要管理员权限。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -876,7 +876,7 @@ compact.exe /CompactOS:always";
 
   private void btnUnInstall_Click(object sender, EventArgs e) {
     if (!OSHelper.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to remove updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("卸载更新需要管理员权限。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -910,10 +910,10 @@ compact.exe /CompactOS:always";
 
     if (links.Length != 0) {
       Clipboard.SetText(links);
-      AppLog.Line("Update Download Links copied to clipboard");
+      AppLog.Line("更新下载链接已复制到剪贴板");
     }
     else {
-      AppLog.Line("No updates selected");
+      AppLog.Line("未选择任何更新");
     }
   }
 
@@ -923,13 +923,13 @@ compact.exe /CompactOS:always";
 
   private static string GetOpStr(WuAgent.AgentOperation op) {
     return op switch {
-      WuAgent.AgentOperation.CheckingUpdates => "Checking for Updates",
-      WuAgent.AgentOperation.PreparingCheck => "Preparing Check",
-      WuAgent.AgentOperation.PreparingUpdates or WuAgent.AgentOperation.DownloadingUpdates => "Downloading Updates",
-      WuAgent.AgentOperation.InstallingUpdates => "Installing Updates",
-      WuAgent.AgentOperation.RemovingUpdates => "Removing Updates",
-      WuAgent.AgentOperation.CancelingOperation => "Cancelling Operation",
-      _ => "Unknown Operation"
+      WuAgent.AgentOperation.CheckingUpdates => "正在检查更新",
+      WuAgent.AgentOperation.PreparingCheck => "正在准备检查",
+      WuAgent.AgentOperation.PreparingUpdates or WuAgent.AgentOperation.DownloadingUpdates => "正在下载更新",
+      WuAgent.AgentOperation.InstallingUpdates => "正在安装更新",
+      WuAgent.AgentOperation.RemovingUpdates => "正在卸载更新",
+      WuAgent.AgentOperation.CancelingOperation => "正在取消操作",
+      _ => "未知操作"
     };
   }
 
@@ -990,13 +990,13 @@ compact.exe /CompactOS:always";
   private void ShowResult(WuAgent.AgentOperation op, WuAgent.RetCodes ret, bool reboot = false) {
     if (op == WuAgent.AgentOperation.DownloadingUpdates && chkManual.Checked) {
       if (ret == WuAgent.RetCodes.Success) {
-        MessageBox.Show($"Updates downloaded to {agent.DlPath}, ready to be installed by the user.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show($"更新已下载到 {agent.DlPath}，可由用户手动安装。", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.DownloadFailed) {
-        MessageBox.Show($"Updates downloaded to {agent.DlPath}, some updates failed to download.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show($"更新已下载到 {agent.DlPath}，但部分更新下载失败。", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -1008,7 +1008,7 @@ compact.exe /CompactOS:always";
         if (chkAutoRestart.Checked && ScheduleAutoRestart(autoRestartDelayMinutes)) {
           if (autoRestartDelayMinutes > 0) {
             var restartTime = DateTime.Now.AddMinutes(autoRestartDelayMinutes);
-            if (MessageBox.Show($"Updates successfully installed. The computer will restart at {restartTime:T}.",
+            if (MessageBox.Show($"更新已成功安装。计算机将于 {restartTime:T} 重启。",
                   Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Information) ==
                 DialogResult.Cancel) {
               ScheduleAutoRestart(0, true);
@@ -1016,13 +1016,13 @@ compact.exe /CompactOS:always";
           }
           return;
         }
-        MessageBox.Show("Updates successfully installed, however, a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show("更新已成功安装，但需要重启计算机。", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.DownloadFailed) {
-        MessageBox.Show("Installation of some Updates has failed, also a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show("部分更新安装失败，且需要重启计算机。", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -1034,32 +1034,32 @@ compact.exe /CompactOS:always";
       case WuAgent.RetCodes.Aborted:
       case WuAgent.RetCodes.InProgress: return;
       case WuAgent.RetCodes.AccessError:
-        status = "Required privileges are not available";
+        status = "所需的权限不可用";
         break;
       case WuAgent.RetCodes.Busy:
-        status = "Another operation is already in progress";
+        status = "已有另一个操作正在进行";
         break;
       case WuAgent.RetCodes.DownloadFailed:
-        status = "Download failed";
+        status = "下载失败";
         break;
       case WuAgent.RetCodes.InstallFailed:
-        status = "Installation failed";
+        status = "安装失败";
         break;
       case WuAgent.RetCodes.NoUpdated:
-        status = "No selected updates or no updates eligible for the operation";
+        status = "未选择更新，或没有符合条件的更新";
         break;
       case WuAgent.RetCodes.InternalError:
-        status = "Internal error";
+        status = "内部错误";
         break;
       case WuAgent.RetCodes.FileNotFound:
-        status = "Required file(s) could not be found";
+        status = "找不到所需的文件";
         break;
     }
 
     var action = GetOpStr(op);
 
     resultShown = true;
-    MessageBox.Show($"{action} failed: {status}.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    MessageBox.Show($"{action}失败：{status}。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
     resultShown = false;
   }
 
@@ -1131,7 +1131,7 @@ compact.exe /CompactOS:always";
         var test = Gpo.GetDisableAu();
         Gpo.DisableAu(true);
         if (!test)
-          MessageBox.Show("For the new configuration to fully take effect a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+          MessageBox.Show("新配置需重启计算机后才能完全生效。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
 
       Gpo.ConfigAu(Gpo.AuOptions.Disabled);
@@ -1160,7 +1160,7 @@ compact.exe /CompactOS:always";
       }
       else {
         if (!chkDisableAU.Checked)
-          switch (MessageBox.Show("Your version of Windows does not respect the standard GPO's, to keep automatic Windows updates blocked, update facilitation services must be disabled.", Updater.ApplicationTitle, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
+          switch (MessageBox.Show("您的 Windows 版本不支持标准组策略（GPO），若要持续阻止 Windows 自动更新，必须禁用更新辅助服务。", Updater.ApplicationTitle, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
             case DialogResult.Yes:
               chkDisableAU.Checked = true; // Note: this triggers chkDisableAU_CheckedChanged
               break;
@@ -1196,7 +1196,7 @@ compact.exe /CompactOS:always";
     var test = Gpo.GetDisableAu();
     Gpo.DisableAu(chkDisableAU.Checked);
     if (test != chkDisableAU.Checked)
-      MessageBox.Show("For the new configuration to fully take effect a reboot is required.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("新配置需重启计算机后才能完全生效。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
   }
 
   private void chkAutoRun_CheckedChanged(object sender, EventArgs e) {
@@ -1337,15 +1337,15 @@ compact.exe /CompactOS:always";
       p?.WaitForExit(1000);
       if (p != null && p.ExitCode == 0) {
         AppLog.Line(cancel
-          ? "Automatic restart cancellation requested."
-          : "Automatic restart scheduled in {0} minute(s).",
+          ? "已请求取消自动重启。"
+          : "已计划在 {0} 分钟后自动重启。",
           delayMinutes);
         return true;
       }
     }
     catch (Exception ex) {
-      AppLog.Line($"Failed to {(cancel ? "cancel" : "schedule")} automatic restart: {0}", ex.Message);
-      MessageBox.Show($"Automatic restart could not be {(cancel ? "cancelled" : "scheduled")}: {ex.Message}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      AppLog.Line($"{(cancel ? "取消" : "计划")}自动重启失败：{0}", ex.Message);
+      MessageBox.Show($"无法{(cancel ? "取消" : "计划")}自动重启：{ex.Message}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
     return false;
   }
@@ -1525,7 +1525,7 @@ compact.exe /CompactOS:always";
       Font = new Font(name, size, style);
     }
     catch (Exception ex) {
-      AppLog.Line($"Error restoring saved UI font: {ex.Message}");
+      AppLog.Line($"恢复已保存的界面字体出错：{ex.Message}");
     }
   }
 

@@ -106,9 +106,9 @@ internal class UpdateDownloader {
     if (!args.Cancelled) {
       var download = mDownloads[mCurrentTask];
       if (!args.Success) {
-        AppLog.Line("Download failed: {0}", args.GetError());
+        AppLog.Line("下载失败：{0}", args.GetError());
         if (mCurTask.DlName != null && File.Exists(mCurTask.DlPath + @"\" + mCurTask.DlName))
-          AppLog.Line("An older version is present and will be used.");
+          AppLog.Line("已存在旧版本文件，将使用该文件。");
         else
           download.Failed = true;
       }

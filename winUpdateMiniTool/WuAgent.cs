@@ -82,7 +82,7 @@ internal class WuAgent {
 
     WindowsUpdateAgentInfo info = new();
     var currentVersion = $"{info.GetInfo("ApiMajorVersion").ToString().Trim()}.{info.GetInfo("ApiMinorVersion").ToString().Trim()} ({info.GetInfo("ProductVersionString").ToString().Trim()})";
-    AppLog.Line("Windows Update Agent Version: {0}", currentVersion);
+    AppLog.Line("Windows Update Agent 版本：{0}", currentVersion);
 
     mUpdateSession = new UpdateSession {
       ClientApplicationID = Updater.ApplicationTitle
@@ -125,7 +125,7 @@ internal class WuAgent {
 
   private bool LoadServices(bool cleanUp = false) {
     try {
-      Console.WriteLine(@"Update Services:");
+      Console.WriteLine(@"更新服务：");
       MServiceList.Clear();
       foreach (IUpdateService service in mUpdateServiceManager.Services) {
         if (service.Name == MMyOfflineSvc) {
@@ -157,7 +157,7 @@ internal class WuAgent {
 
   private static void LogError(Exception error) {
     var errCode = (uint)error.HResult;
-    AppLog.Line("Error 0x{0}: {1}", errCode.ToString("X").PadLeft(8, '0'), UpdateErrors.GetErrorStr(errCode));
+    AppLog.Line("错误 0x{0}：{1}", errCode.ToString("X").PadLeft(8, '0'), UpdateErrors.GetErrorStr(errCode));
   }
 
   public void EnableService(string guid, bool enable = true) {
@@ -205,7 +205,7 @@ internal class WuAgent {
   private RetCodes SetupOffline() {
     try {
       if (mOfflineService == null) {
-        AppLog.Line("Setting up 'Offline Sync Service'");
+        AppLog.Line("正在设置“离线同步服务”");
         mOfflineService =
             mUpdateServiceManager.AddScanPackageService(MMyOfflineSvc, DlPath + @"\wsusscn2.cab");
       }
@@ -292,7 +292,7 @@ internal class WuAgent {
       mCurOperation = AgentOperation.PreparingCheck;
       OnProgress(-1, 0, 0, 0);
 
-      AppLog.Line("downloading wsusscn2.cab");
+      AppLog.Line("正在下载 wsusscn2.cab");
 
       List<UpdateDownloader.Task> downloads = [];
       downloads.Add(new  UpdateDownloader.Task {
@@ -325,7 +325,7 @@ internal class WuAgent {
 
     mCallback = new UpdateCallback(this);
 
-    AppLog.Line("Searching for updates");
+    AppLog.Line("正在搜索更新");
     //for the above search criteria refer to
     // http://msdn.microsoft.com/en-us/library/windows/desktop/aa386526(v=VS.85).aspx
     try {
@@ -387,7 +387,7 @@ internal class WuAgent {
     List<UpdateDownloader.Task> downloads = [];
     foreach (var update in updates) {
       if (update.Downloads.Count == 0) {
-        AppLog.Line("Error: No Download Url's found for update {0}", update.Title);
+        AppLog.Line("错误：未找到更新“{0}”的下载地址", update.Title);
         continue;
       }
 
@@ -430,7 +430,7 @@ internal class WuAgent {
     List<MsUpdate> filteredUpdates = [];
     foreach (var update in updates) {
       if ((update.Attributes & (int)MsUpdate.UpdateAttr.Uninstallable) == 0) {
-        AppLog.Line("Update can not be uninstalled: {0}", update.Title);
+        AppLog.Line("该更新无法卸载：{0}", update.Title);
         continue;
       }
 
@@ -438,7 +438,7 @@ internal class WuAgent {
     }
 
     if (filteredUpdates.Count == 0) {
-      AppLog.Line("No updates selected or eligible for uninstallation");
+      AppLog.Line("未选择更新，或没有可卸载的更新");
       return RetCodes.NoUpdated;
     }
 
@@ -459,7 +459,7 @@ internal class WuAgent {
     }
 
     if (mCurOperation == AgentOperation.PreparingCheck) {
-      AppLog.Line("wsusscn2.cab downloaded");
+      AppLog.Line("wsusscn2.cab 下载完成");
 
       var ret = ClearOffline();
       if (ret == RetCodes.Success)
@@ -489,7 +489,7 @@ internal class WuAgent {
           Program.IniWriteValue(KB, "Files", Files, INIPath);
       }*/
 
-      AppLog.Line("Downloaded {0} out of {1} to {2}", allFiles.GetCount(), args.Downloads.Count, DlPath);
+      AppLog.Line("已下载 {0}/{1} 个文件到 {2}", allFiles.GetCount(), args.Downloads.Count, DlPath);
 
       if (mCurOperation == AgentOperation.PreparingUpdates) {
         var ret = InstallUpdatesManually(args.Updates, allFiles);
@@ -512,7 +512,7 @@ internal class WuAgent {
   private void InstallFinished(object sender, UpdateInstaller.FinishedEventArgs args) // "manual" mode
   {
     if (args.Success) {
-      AppLog.Line("Updates (Un)Installed successfully");
+      AppLog.Line("更新安装/卸载成功");
 
       foreach (var update in args.Updates)
         switch (mCurOperation) {
@@ -535,11 +535,11 @@ internal class WuAgent {
         }
     }
     else {
-      AppLog.Line("Updates failed to (Un)Install");
+      AppLog.Line("更新安装/卸载失败");
     }
 
     if (args.Reboot)
-      AppLog.Line("Reboot is required for one or more updates");
+      AppLog.Line("有一个或多个更新需要重启计算机");
 
     OnUpdatesChanged();
 
@@ -566,7 +566,7 @@ internal class WuAgent {
     }
 
     if (mDownloader.Updates.Count == 0) {
-      AppLog.Line("No updates selected for download");
+      AppLog.Line("未选择要下载的更新");
       return RetCodes.NoUpdated;
     }
 
@@ -575,7 +575,7 @@ internal class WuAgent {
 
     mCallback = new UpdateCallback(this);
 
-    AppLog.Line("Downloading Updates... This may take several minutes.");
+    AppLog.Line("正在下载更新...这可能需要几分钟。");
     try {
       mDownloadJob = mDownloader.BeginDownload(mCallback, mCallback, updates);
     }
@@ -597,7 +597,7 @@ internal class WuAgent {
       mInstaller.Updates.Add(update);
 
     if (mInstaller.Updates.Count == 0) {
-      AppLog.Line("No updates selected for installation");
+      AppLog.Line("未选择要安装的更新");
       return RetCodes.NoUpdated;
     }
 
@@ -606,7 +606,7 @@ internal class WuAgent {
 
     mCallback = new UpdateCallback(this);
 
-    AppLog.Line("Installing Updates... This may take several minutes.");
+    AppLog.Line("正在安装更新...这可能需要几分钟。");
     try {
       mInstalationJob = mInstaller.BeginInstall(mCallback, mCallback, updates);
     }
@@ -710,7 +710,7 @@ internal class WuAgent {
       searchResults = mUpdateSearcher.EndSearch(searchJob);
     }
     catch (Exception err) {
-      AppLog.Line("Search for updates failed");
+      AppLog.Line("检查更新失败");
       LogError(err);
       OnFinished(RetCodes.InternalError);
       return;
@@ -731,7 +731,7 @@ internal class WuAgent {
       Console.WriteLine(update.Title);
     }
 
-    AppLog.Line("Found {0} pending updates.", MPendingUpdates.Count);
+    AppLog.Line("发现 {0} 个待处理更新。", MPendingUpdates.Count);
 
     OnUpdatesChanged(true);
 
@@ -757,7 +757,7 @@ internal class WuAgent {
       downloadResults = mDownloader.EndDownload(downloadJob);
     }
     catch (Exception err) {
-      AppLog.Line("Downloading updates failed");
+      AppLog.Line("下载更新失败");
       LogError(err);
       OnFinished(RetCodes.InternalError);
       return;
@@ -771,7 +771,7 @@ internal class WuAgent {
         OnFinished(ret);
     }
     else {
-      AppLog.Line("Updates downloaded to %windir%\\SoftwareDistribution\\Download");
+      AppLog.Line("更新已下载到 %windir%\\SoftwareDistribution\\Download");
 
       var ret = downloadResults.ResultCode switch {
         OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors => RetCodes.Success,
@@ -797,14 +797,14 @@ internal class WuAgent {
         installationResults = mInstaller.EndUninstall(installationJob);
     }
     catch (Exception err) {
-      AppLog.Line("(Un)Installing updates failed");
+      AppLog.Line("更新安装/卸载失败");
       LogError(err);
       OnFinished(RetCodes.InternalError);
       return;
     }
 
     if (installationResults!.ResultCode == OperationResultCode.orcSucceeded) {
-      AppLog.Line("Updates (Un)Installed successfully");
+      AppLog.Line("更新安装/卸载成功");
 
       foreach (var update in updates)
         if (mCurOperation == AgentOperation.InstallingUpdates) {
@@ -821,10 +821,10 @@ internal class WuAgent {
         }
 
       if (installationResults.RebootRequired)
-        AppLog.Line("Reboot is required for one or more updates");
+        AppLog.Line("有一个或多个更新需要重启计算机");
     }
     else {
-      AppLog.Line("Updates failed to (Un)Install");
+      AppLog.Line("更新安装/卸载失败");
     }
 
     OnUpdatesChanged();
@@ -854,7 +854,7 @@ internal class WuAgent {
       }
     }
     catch (Exception err) {
-      AppLog.Line("Error: " + err.Message);
+      AppLog.Line("错误：" + err.Message);
     }
   }
 

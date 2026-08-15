@@ -193,7 +193,7 @@ namespace winUpdateMiniTool {
       this.lblSearch.Name = "lblSearch";
       this.lblSearch.Size = new System.Drawing.Size(94, 13);
       this.lblSearch.TabIndex = 2;
-      this.lblSearch.Text = "Search Filter:";
+      this.lblSearch.Text = "搜索过滤：";
       // 
       // updateView
       // 
@@ -227,31 +227,31 @@ namespace winUpdateMiniTool {
       // 
       // columnHeader1
       // 
-      this.columnHeader1.Text = "Title";
+      this.columnHeader1.Text = "标题";
       this.columnHeader1.Width = 250;
       // 
       // columnHeader2
       // 
-      this.columnHeader2.Text = "Category";
+      this.columnHeader2.Text = "类别";
       this.columnHeader2.Width = 100;
       // 
       // columnHeader3
       // 
-      this.columnHeader3.Text = "KB Article";
+      this.columnHeader3.Text = "KB 编号";
       this.columnHeader3.Width = 120;
       // 
       // columnHeader4
       // 
-      this.columnHeader4.Text = "Date";
+      this.columnHeader4.Text = "日期";
       // 
       // columnHeader5
       // 
-      this.columnHeader5.Text = "Size";
+      this.columnHeader5.Text = "大小";
       this.columnHeader5.Width = 70;
       // 
       // columnHeader6
       // 
-      this.columnHeader6.Text = "State";
+      this.columnHeader6.Text = "状态";
       this.columnHeader6.Width = 110;
       // 
       // tableLayoutPanel7
@@ -287,7 +287,7 @@ namespace winUpdateMiniTool {
       this.lblSupport.Size = new System.Drawing.Size(69, 13);
       this.lblSupport.TabIndex = 0;
       this.lblSupport.TabStop = true;
-      this.lblSupport.Text = "Support URL";
+      this.lblSupport.Text = "支持页面";
       this.lblSupport.Visible = false;
       this.lblSupport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblSupport_LinkClicked);
       // 
@@ -301,7 +301,7 @@ namespace winUpdateMiniTool {
       this.chkGrupe.Name = "chkGrupe";
       this.chkGrupe.Size = new System.Drawing.Size(98, 17);
       this.chkGrupe.TabIndex = 1;
-      this.chkGrupe.Text = "Group Updates";
+      this.chkGrupe.Text = "按类别分组";
       this.chkGrupe.UseVisualStyleBackColor = true;
       this.chkGrupe.CheckedChanged += new System.EventHandler(this.chkGrupe_CheckedChanged);
       // 
@@ -315,7 +315,7 @@ namespace winUpdateMiniTool {
       this.chkAll.Name = "chkAll";
       this.chkAll.Size = new System.Drawing.Size(70, 17);
       this.chkAll.TabIndex = 2;
-      this.chkAll.Text = "Select All";
+      this.chkAll.Text = "全选";
       this.chkAll.UseVisualStyleBackColor = true;
       this.chkAll.CheckedChanged += new System.EventHandler(this.chkAll_CheckedChanged);
       // 
@@ -416,7 +416,7 @@ namespace winUpdateMiniTool {
       this.btnHidden.Name = "btnHidden";
       this.btnHidden.Size = new System.Drawing.Size(119, 30);
       this.btnHidden.TabIndex = 7;
-      this.btnHidden.Text = "Hidden Updates";
+      this.btnHidden.Text = "已隐藏更新";
       this.btnHidden.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       this.btnHidden.CheckedChanged += new System.EventHandler(this.btnHidden_CheckedChanged);
       // 
@@ -428,7 +428,7 @@ namespace winUpdateMiniTool {
       this.btnInstalled.Name = "btnInstalled";
       this.btnInstalled.Size = new System.Drawing.Size(119, 30);
       this.btnInstalled.TabIndex = 8;
-      this.btnInstalled.Text = "Installed Updates";
+      this.btnInstalled.Text = "已安装更新";
       this.btnInstalled.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       this.btnInstalled.CheckedChanged += new System.EventHandler(this.btnInstalled_CheckedChanged);
       // 
@@ -440,7 +440,7 @@ namespace winUpdateMiniTool {
       this.btnWinUpd.Name = "btnWinUpd";
       this.btnWinUpd.Size = new System.Drawing.Size(119, 30);
       this.btnWinUpd.TabIndex = 0;
-      this.btnWinUpd.Text = "Windows Updates";
+      this.btnWinUpd.Text = "Windows 更新";
       this.btnWinUpd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       this.btnWinUpd.CheckedChanged += new System.EventHandler(this.btnWinUpd_CheckedChanged);
       // 
@@ -452,7 +452,7 @@ namespace winUpdateMiniTool {
       this.btnHistory.Name = "btnHistory";
       this.btnHistory.Size = new System.Drawing.Size(119, 30);
       this.btnHistory.TabIndex = 6;
-      this.btnHistory.Text = "Update History";
+      this.btnHistory.Text = "更新历史";
       this.btnHistory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       this.btnHistory.CheckedChanged += new System.EventHandler(this.btnHistory_CheckedChanged);
       // 
@@ -537,7 +537,7 @@ namespace winUpdateMiniTool {
       this.gbStartup.Size = new System.Drawing.Size(183, 48);
       this.gbStartup.TabIndex = 8;
       this.gbStartup.TabStop = false;
-      this.gbStartup.Text = "Background tasks";
+      this.gbStartup.Text = "后台任务";
       // 
       // dlAutoCheck
       // 
@@ -545,10 +545,10 @@ namespace winUpdateMiniTool {
       this.dlAutoCheck.Enabled = false;
       this.dlAutoCheck.FormattingEnabled = true;
       this.dlAutoCheck.Items.AddRange(new object[] {
-            "No auto search for updates",
-            "Search for updates every day",
-            "Search for updates once a week",
-            "Search for updates every month"});
+            "不自动检查更新",
+            "每天检查更新",
+            "每周检查一次更新",
+            "每月检查一次更新"});
       this.dlAutoCheck.Location = new System.Drawing.Point(6, 19);
       this.dlAutoCheck.Name = "dlAutoCheck";
       this.dlAutoCheck.Size = new System.Drawing.Size(163, 21);
@@ -578,7 +578,7 @@ namespace winUpdateMiniTool {
       this.gbxAutoUpdate.Size = new System.Drawing.Size(183, 222);
       this.gbxAutoUpdate.TabIndex = 11;
       this.gbxAutoUpdate.TabStop = false;
-      this.gbxAutoUpdate.Text = "Auto Update";
+      this.gbxAutoUpdate.Text = "自动更新";
       // 
       // label1
       // 
@@ -595,7 +595,7 @@ namespace winUpdateMiniTool {
       this.chkBlockMS.Name = "chkBlockMS";
       this.chkBlockMS.Size = new System.Drawing.Size(164, 17);
       this.chkBlockMS.TabIndex = 4;
-      this.chkBlockMS.Text = "Block Access to WU Servers";
+      this.chkBlockMS.Text = "阻止访问 WU 服务器";
       this.chkBlockMS.UseVisualStyleBackColor = true;
       this.chkBlockMS.CheckedChanged += new System.EventHandler(this.chkBlockMS_CheckedChanged);
       // 
@@ -606,7 +606,7 @@ namespace winUpdateMiniTool {
       this.chkDrivers.Name = "chkDrivers";
       this.chkDrivers.Size = new System.Drawing.Size(97, 17);
       this.chkDrivers.TabIndex = 7;
-      this.chkDrivers.Text = "Include Drivers";
+      this.chkDrivers.Text = "包含驱动程序";
       this.chkDrivers.ThreeState = true;
       this.chkDrivers.UseVisualStyleBackColor = true;
       this.chkDrivers.CheckStateChanged += new System.EventHandler(this.chkDrivers_CheckStateChanged);
@@ -654,7 +654,7 @@ namespace winUpdateMiniTool {
       this.chkStore.Name = "chkStore";
       this.chkStore.Size = new System.Drawing.Size(152, 17);
       this.chkStore.TabIndex = 21;
-      this.chkStore.Text = "Disable Store Auto Update";
+      this.chkStore.Text = "禁用商店自动更新";
       this.chkStore.UseVisualStyleBackColor = true;
       this.chkStore.CheckedChanged += new System.EventHandler(this.chkStore_CheckedChanged);
       // 
@@ -664,14 +664,14 @@ namespace winUpdateMiniTool {
       this.dlShDay.Enabled = false;
       this.dlShDay.FormattingEnabled = true;
       this.dlShDay.Items.AddRange(new object[] {
-            "Daily",
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"});
+            "每天",
+            "周日",
+            "周一",
+            "周二",
+            "周三",
+            "周四",
+            "周五",
+            "周六"});
       this.dlShDay.Location = new System.Drawing.Point(21, 122);
       this.dlShDay.Name = "dlShDay";
       this.dlShDay.Size = new System.Drawing.Size(90, 21);
@@ -685,7 +685,7 @@ namespace winUpdateMiniTool {
       this.chkHideWU.Name = "chkHideWU";
       this.chkHideWU.Size = new System.Drawing.Size(139, 17);
       this.chkHideWU.TabIndex = 1;
-      this.chkHideWU.Text = "Hide WU Settings Page";
+      this.chkHideWU.Text = "隐藏更新设置页";
       this.chkHideWU.UseVisualStyleBackColor = true;
       this.chkHideWU.CheckedChanged += new System.EventHandler(this.chkHideWU_CheckedChanged);
       // 
@@ -697,7 +697,7 @@ namespace winUpdateMiniTool {
       this.radDisable.Size = new System.Drawing.Size(148, 17);
       this.radDisable.TabIndex = 15;
       this.radDisable.TabStop = true;
-      this.radDisable.Text = "Disable Automatic Update";
+      this.radDisable.Text = "禁用自动更新";
       this.radDisable.UseVisualStyleBackColor = true;
       this.radDisable.CheckedChanged += new System.EventHandler(this.radGPO_CheckedChanged);
       // 
@@ -707,7 +707,7 @@ namespace winUpdateMiniTool {
       this.chkDisableAU.Name = "chkDisableAU";
       this.chkDisableAU.Size = new System.Drawing.Size(155, 17);
       this.chkDisableAU.TabIndex = 20;
-      this.chkDisableAU.Text = "Disable Update Facilitators";
+      this.chkDisableAU.Text = "禁用更新辅助服务";
       this.chkDisableAU.UseVisualStyleBackColor = true;
       this.chkDisableAU.CheckedChanged += new System.EventHandler(this.chkDisableAU_CheckedChanged);
       // 
@@ -719,7 +719,7 @@ namespace winUpdateMiniTool {
       this.radNotify.Size = new System.Drawing.Size(102, 17);
       this.radNotify.TabIndex = 16;
       this.radNotify.TabStop = true;
-      this.radNotify.Text = "Notification Only";
+      this.radNotify.Text = "仅通知";
       this.radNotify.UseVisualStyleBackColor = true;
       this.radNotify.CheckedChanged += new System.EventHandler(this.radGPO_CheckedChanged);
       // 
@@ -731,7 +731,7 @@ namespace winUpdateMiniTool {
       this.radDefault.Size = new System.Drawing.Size(151, 17);
       this.radDefault.TabIndex = 19;
       this.radDefault.TabStop = true;
-      this.radDefault.Text = "Automatic Update (default)";
+      this.radDefault.Text = "自动更新（默认）";
       this.radDefault.UseVisualStyleBackColor = true;
       this.radDefault.CheckedChanged += new System.EventHandler(this.radGPO_CheckedChanged);
       // 
@@ -743,7 +743,7 @@ namespace winUpdateMiniTool {
       this.radDownload.Size = new System.Drawing.Size(97, 17);
       this.radDownload.TabIndex = 17;
       this.radDownload.TabStop = true;
-      this.radDownload.Text = "Download Only";
+      this.radDownload.Text = "仅下载";
       this.radDownload.UseVisualStyleBackColor = true;
       this.radDownload.CheckedChanged += new System.EventHandler(this.radGPO_CheckedChanged);
       // 
@@ -755,7 +755,7 @@ namespace winUpdateMiniTool {
       this.radSchedule.Size = new System.Drawing.Size(132, 17);
       this.radSchedule.TabIndex = 18;
       this.radSchedule.TabStop = true;
-      this.radSchedule.Text = "Scheduled & Installation";
+      this.radSchedule.Text = "按计划时间安装";
       this.radSchedule.UseVisualStyleBackColor = true;
       this.radSchedule.CheckedChanged += new System.EventHandler(this.radGPO_CheckedChanged);
       // 
@@ -777,7 +777,7 @@ namespace winUpdateMiniTool {
       this.gbxOptions.Size = new System.Drawing.Size(183, 164);
       this.gbxOptions.TabIndex = 10;
       this.gbxOptions.TabStop = false;
-      this.gbxOptions.Text = "Options";
+      this.gbxOptions.Text = "选项";
       // 
       // dlSource
       // 
@@ -799,7 +799,7 @@ namespace winUpdateMiniTool {
       this.chkDownload.Name = "chkDownload";
       this.chkDownload.Size = new System.Drawing.Size(145, 17);
       this.chkDownload.TabIndex = 3;
-      this.chkDownload.Text = "Download wsusscn2.cab";
+      this.chkDownload.Text = "下载 wsusscn2.cab";
       this.chkDownload.UseVisualStyleBackColor = true;
       this.chkDownload.CheckedChanged += new System.EventHandler(this.chkDownload_CheckedChanged);
       // 
@@ -812,7 +812,7 @@ namespace winUpdateMiniTool {
       this.chkOffline.Name = "chkOffline";
       this.chkOffline.Size = new System.Drawing.Size(86, 17);
       this.chkOffline.TabIndex = 1;
-      this.chkOffline.Text = "Offline Mode";
+      this.chkOffline.Text = "离线模式";
       this.chkOffline.UseVisualStyleBackColor = true;
       this.chkOffline.CheckedChanged += new System.EventHandler(this.chkOffline_CheckedChanged);
       // 
@@ -823,7 +823,7 @@ namespace winUpdateMiniTool {
       this.chkManual.Name = "chkManual";
       this.chkManual.Size = new System.Drawing.Size(148, 17);
       this.chkManual.TabIndex = 0;
-      this.chkManual.Text = "\'Manual\' Download/Install";
+      this.chkManual.Text = "\'手动\'下载/安装";
       this.chkManual.UseVisualStyleBackColor = true;
       this.chkManual.CheckedChanged += new System.EventHandler(this.chkManual_CheckedChanged);
       // 
@@ -834,7 +834,7 @@ namespace winUpdateMiniTool {
       this.chkMsUpd.Name = "chkMsUpd";
       this.chkMsUpd.Size = new System.Drawing.Size(149, 17);
       this.chkMsUpd.TabIndex = 0;
-      this.chkMsUpd.Text = "Register Microsoft Update";
+      this.chkMsUpd.Text = "注册 Microsoft Update";
       this.chkMsUpd.UseVisualStyleBackColor = true;
       this.chkMsUpd.CheckedChanged += new System.EventHandler(this.chkMsUpd_CheckedChanged);
       // 
@@ -845,7 +845,7 @@ namespace winUpdateMiniTool {
       this.chkOld.Name = "chkOld";
       this.chkOld.Size = new System.Drawing.Size(119, 17);
       this.chkOld.TabIndex = 2;
-      this.chkOld.Text = "Include superseded";
+      this.chkOld.Text = "包含已被取代的更新";
       this.chkOld.UseVisualStyleBackColor = true;
       this.chkOld.CheckedChanged += new System.EventHandler(this.chkOld_CheckedChanged);
       // 
@@ -856,7 +856,7 @@ namespace winUpdateMiniTool {
       this.chkAutoRestart.Name = "chkAutoRestart";
       this.chkAutoRestart.Size = new System.Drawing.Size(160, 17);
       this.chkAutoRestart.TabIndex = 4;
-      this.chkAutoRestart.Text = "Restart automatically after install";
+      this.chkAutoRestart.Text = "安装后自动重启";
       this.chkAutoRestart.UseVisualStyleBackColor = true;
       this.chkAutoRestart.CheckedChanged += new System.EventHandler(this.chkAutoRestart_CheckedChanged);
       //
@@ -866,14 +866,14 @@ namespace winUpdateMiniTool {
       this.cbRestartDelay.Enabled = false;
       this.cbRestartDelay.FormattingEnabled = true;
       this.cbRestartDelay.Items.AddRange(new object[] {
-            "Immediately",
-            "After 1 minute",
-            "After 2 minutes",
-            "After 5 minutes",
-            "After 10 minutes",
-            "After 15 minutes",
-            "After 30 minutes",
-            "After 60 minutes"});
+            "立即",
+            "1 分钟后",
+            "2 分钟后",
+            "5 分钟后",
+            "10 分钟后",
+            "15 分钟后",
+            "30 分钟后",
+            "60 分钟后"});
       this.cbRestartDelay.Location = new System.Drawing.Point(25, 138);
       this.cbRestartDelay.Name = "cbRestartDelay";
       this.cbRestartDelay.Size = new System.Drawing.Size(140, 21);
@@ -903,20 +903,20 @@ namespace winUpdateMiniTool {
             this.exitToolStripMenuItem});
       this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
       this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-      this.fileToolStripMenuItem.Text = "File";
+      this.fileToolStripMenuItem.Text = "文件";
       // 
       // cleanToolStripMenuItem
       // 
       this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
       this.cleanToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-      this.cleanToolStripMenuItem.Text = "Clean cache";
+      this.cleanToolStripMenuItem.Text = "清理更新缓存";
       this.cleanToolStripMenuItem.Click += new System.EventHandler(this.menuClean_Click);
       // 
       // optimizeToolStripMenuItem
       // 
       this.optimizeToolStripMenuItem.Name = "optimizeToolStripMenuItem";
       this.optimizeToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-      this.optimizeToolStripMenuItem.Text = "Optimize kernel size";
+      this.optimizeToolStripMenuItem.Text = "优化系统体积";
       this.optimizeToolStripMenuItem.Click += new System.EventHandler(this.menuOptimize_Click);
       // 
       // toolStripMenuItem3
@@ -928,7 +928,7 @@ namespace winUpdateMiniTool {
       // 
       this.restoreDefaultsToolStripMenuItem.Name = "restoreDefaultsToolStripMenuItem";
       this.restoreDefaultsToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-      this.restoreDefaultsToolStripMenuItem.Text = "Restore default settings";
+      this.restoreDefaultsToolStripMenuItem.Text = "恢复默认设置";
       this.restoreDefaultsToolStripMenuItem.Click += new System.EventHandler(this.restoreDefaults_Click);
       // 
       // toolStripMenuItem4
@@ -941,7 +941,7 @@ namespace winUpdateMiniTool {
       this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
       this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
       this.exitToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-      this.exitToolStripMenuItem.Text = "Exit";
+      this.exitToolStripMenuItem.Text = "退出";
       this.exitToolStripMenuItem.Click += new System.EventHandler(this.menuExit_Click);
       // 
       // optionsToolStripMenuItem
@@ -957,13 +957,13 @@ namespace winUpdateMiniTool {
             this.selectUIFontToolStripMenuItem});
       this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
       this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-      this.optionsToolStripMenuItem.Text = "Options";
+      this.optionsToolStripMenuItem.Text = "选项";
       // 
       // toolsToolStripMenuItem
       // 
       this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
       this.toolsToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-      this.toolsToolStripMenuItem.Text = "Tools";
+      this.toolsToolStripMenuItem.Text = "工具";
       // 
       // toolStripMenuItem1
       // 
@@ -974,21 +974,21 @@ namespace winUpdateMiniTool {
       // 
       this.chkAutoRun.Name = "chkAutoRun";
       this.chkAutoRun.Size = new System.Drawing.Size(222, 22);
-      this.chkAutoRun.Text = "Run in background";
+      this.chkAutoRun.Text = "后台运行";
       this.chkAutoRun.Click += new System.EventHandler(this.chkAutoRun_CheckedChanged);
       // 
       // chkAutoUpdateApp
       // 
       this.chkAutoUpdateApp.Name = "chkAutoUpdateApp";
       this.chkAutoUpdateApp.Size = new System.Drawing.Size(222, 22);
-      this.chkAutoUpdateApp.Text = "Auto-update application";
+      this.chkAutoUpdateApp.Text = "自动更新本程序";
       this.chkAutoUpdateApp.Click += new System.EventHandler(this.chkAutoUpdateApp_Click);
       // 
       // chkNoUAC
       // 
       this.chkNoUAC.Name = "chkNoUAC";
       this.chkNoUAC.Size = new System.Drawing.Size(222, 22);
-      this.chkNoUAC.Text = "Always run as Administrator";
+      this.chkNoUAC.Text = "始终以管理员身份运行";
       this.chkNoUAC.Click += new System.EventHandler(this.chkNoUAC_CheckedChanged);
       // 
       // toolStripMenuItem2
@@ -1000,13 +1000,13 @@ namespace winUpdateMiniTool {
       // 
       this.themeMenuItem.Name = "themeMenuItem";
       this.themeMenuItem.Size = new System.Drawing.Size(222, 22);
-      this.themeMenuItem.Text = "Themes";
+      this.themeMenuItem.Text = "主题";
       // 
       // selectUIFontToolStripMenuItem
       // 
       this.selectUIFontToolStripMenuItem.Name = "selectUIFontToolStripMenuItem";
       this.selectUIFontToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-      this.selectUIFontToolStripMenuItem.Text = "Select UI font";
+      this.selectUIFontToolStripMenuItem.Text = "选择界面字体";
       this.selectUIFontToolStripMenuItem.Click += new System.EventHandler(this.selectUIFontToolStripMenuItem_Click);
       // 
       // helpToolStripMenuItem
@@ -1017,14 +1017,14 @@ namespace winUpdateMiniTool {
             this.aboutToolStripMenuItem});
       this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
       this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-      this.helpToolStripMenuItem.Text = "Help";
+      this.helpToolStripMenuItem.Text = "帮助";
       // 
       // siteToolStripMenuItem
       // 
       this.siteToolStripMenuItem.Name = "siteToolStripMenuItem";
       this.siteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
       this.siteToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-      this.siteToolStripMenuItem.Text = "Site";
+      this.siteToolStripMenuItem.Text = "官方网站";
       this.siteToolStripMenuItem.Click += new System.EventHandler(this.siteToolStripMenuItem_Click);
       // 
       // checkForNewVersionToolStripMenuItem
@@ -1032,7 +1032,7 @@ namespace winUpdateMiniTool {
       this.checkForNewVersionToolStripMenuItem.Name = "checkForNewVersionToolStripMenuItem";
       this.checkForNewVersionToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
       this.checkForNewVersionToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-      this.checkForNewVersionToolStripMenuItem.Text = "Check for new version";
+      this.checkForNewVersionToolStripMenuItem.Text = "检查新版本";
       this.checkForNewVersionToolStripMenuItem.Click += new System.EventHandler(this.checkForNewVersionToolStripMenuItem_Click);
       // 
       // aboutToolStripMenuItem
@@ -1040,7 +1040,7 @@ namespace winUpdateMiniTool {
       this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
       this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
       this.aboutToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-      this.aboutToolStripMenuItem.Text = "About";
+      this.aboutToolStripMenuItem.Text = "关于";
       this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
       // 
       // MainForm
@@ -1055,7 +1055,7 @@ namespace winUpdateMiniTool {
       this.MinimumSize = new System.Drawing.Size(916, 510);
       this.Name = "MainForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-      this.Text = "Windows Update Mini Tool";
+      this.Text = "Windows 更新迷你工具";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormClosing);
       this.panelList.ResumeLayout(false);
       this.panUpdates.ResumeLayout(false);

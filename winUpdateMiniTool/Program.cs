@@ -42,9 +42,9 @@ internal static class Program {
     }
 
     if (TestArg("-dbg_wait"))
-      MessageBox.Show("Waiting for debugger. (press ok when attached)", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("正在等待调试器附加。（附加完成后点击确定）", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-    Console.WriteLine(@"Starting...");
+    Console.WriteLine(@"正在启动...");
 
     WrkPath = appPath = Path.GetDirectoryName(Updater.CurrentFileLocation);
 
@@ -65,13 +65,13 @@ internal static class Program {
 
     if (WinApiHelper.CheckRunningInstances(true, true)) {
       // fallback
-      MessageBox.Show($"{Updater.ApplicationName} is already running.", Updater.ApplicationName,
+      MessageBox.Show($"{Updater.ApplicationName} 已在运行。", Updater.ApplicationName,
         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
       return;
     }
 
     if (!OSHelper.IsAdministrator() && !OSHelper.IsDebugging()) {
-      Console.WriteLine(@"Trying to get admin privileges...");
+      Console.WriteLine(@"正在尝试获取管理员权限...");
 
       if (SkipUacRun()) {
         Application.Exit();
@@ -79,7 +79,7 @@ internal static class Program {
       }
 
       if (!OSHelper.IsRunningAsUwp()) {
-        Console.WriteLine(@"Trying to start with 'runas'...");
+        Console.WriteLine(@"正在尝试以 'runas' 方式启动...");
         // Restart program and run as admin
         var exeName = Process.GetCurrentProcess().MainModule?.FileName;
         var arguments = "\"" + string.Join("\" \"", mainArgs) + "\"";
@@ -93,13 +93,13 @@ internal static class Program {
           return;
         }
         catch {
-          AppLog.Line("Administrator privileges are required in order to install updates.");
+          AppLog.Line("安装更新需要管理员权限。");
         }
       }
     }
 
     if (!FileOps.TestWrite(GetIniPath())) {
-      Console.WriteLine(@"Can't write to default working directory.");
+      Console.WriteLine(@"无法写入默认工作目录。");
 
       var downloadFolder = KnownFolders.GetPath(KnownFolder.Downloads) ??
                            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
@@ -110,11 +110,11 @@ internal static class Program {
           Directory.CreateDirectory(WrkPath);
       }
       catch {
-        MessageBox.Show($"Can't write to working directory: {WrkPath}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageBox.Show($"无法写入工作目录：{WrkPath}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
     }
 
-    AppLog.Line("Working Directory: {0}", WrkPath);
+    AppLog.Line("工作目录：{0}", WrkPath);
     agent = new WuAgent();
     ExecOnStart();
     agent.Init();
@@ -387,7 +387,7 @@ internal static class Program {
       }
     }
     catch (Exception err) {
-      AppLog.Line("Enable SkipUAC Error {0}", err.ToString());
+      AppLog.Line("启用 SkipUAC 出错 {0}", err.ToString());
       return false;
     }
 
@@ -404,7 +404,7 @@ internal static class Program {
       service.Connect();
       var folder = service.GetFolder(@"\");
       var task = folder.GetTask(MF_APP_TASK_NAME);
-      AppLog.Line("Trying to SkipUAC ...");
+      AppLog.Line("正在尝试跳过 UAC ...");
       var action = (IExecAction)task.Definition.Actions[1];
       if (action.Path.Equals(typeof(Program).Assembly.Location, StringComparison.CurrentCultureIgnoreCase)) {
         var arguments = "\"" + string.Join("\" \"", args) + "\"";
@@ -422,7 +422,7 @@ internal static class Program {
       }
     }
     catch (Exception err) {
-      AppLog.Line("SkipUAC Error {0}", err.ToString());
+      AppLog.Line("SkipUAC 出错 {0}", err.ToString());
     }
 
     return false;
@@ -432,14 +432,14 @@ internal static class Program {
   ///     Shows the help message.
   /// </summary>
   private static void ShowHelp() {
-    var message = "Available command line options\r\n";
+    var message = "可用的命令行选项\r\n";
     string[] help =
     [
-        "-tray\t\tStart in Tray",
-            "-onclose [cmd]\tExecute commands when closing",
-            "-update\t\tSearch for updates on start",
-            "-console\t\tshow console (for debugging)",
-            "-help\t\tShow this help message"
+        "-tray\t\t启动到系统托盘",
+            "-onclose [cmd]\t退出时执行命令",
+            "-update\t\t启动时检查更新",
+            "-console\t\t显示控制台（调试用）",
+            "-help\t\t显示本帮助信息"
     ];
     if (!mConsole) {
       MessageBox.Show(message + string.Join("\r\n", help), Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);

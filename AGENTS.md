@@ -1,7 +1,7 @@
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **winUpdateMiniTool** (379 symbols, 972 relationships, 33 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **winUpdateMiniTool** (399 symbols, 994 relationships, 34 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > Index stale? Run `node .gitnexus/run.cjs analyze` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? `npx gitnexus analyze` (npm 11 crash → `npm i -g gitnexus`; #1939).
 
@@ -48,7 +48,7 @@ This project is indexed by GitNexus as **winUpdateMiniTool** (379 symbols, 972 r
 
 ## 项目定位
 
-Windows 更新管理工具（WinForms 桌面应用），通过 **WUApiLib（Windows Update Agent API，COM 互操作）** 检查、下载、安装、卸载微软产品更新。支持 Windows 7–11 / Server 2012–2025。单项目解决方案：`winUpdateMiniTool.sln`，全部源码在 `winUpdateMiniTool/` 子目录。
+Windows 更新管理工具（WinForms 桌面应用），通过 **WUApiLib（Windows Update Agent API，COM 互操作）** 检查、下载、安装、卸载微软产品更新。支持 Windows 7–11 / Server 2012–2025。单项目解决方案：`winUpdateMiniTool.sln`，全部源码在 `winUpdateMiniTool/` 子目录。**界面显示文本已全部汉化为简体中文**（提交 `ef6f466`）。
 
 ## 构建与发布
 
@@ -85,6 +85,15 @@ Windows 更新管理工具（WinForms 桌面应用），通过 **WUApiLib（Wind
 - 日志统一走 `AppLog.Line(...)`，不要引入其他日志框架。
 - `LangVersion=latest`，可用新语法（如 `[]` 集合表达式、target-typed new）。
 - csproj 中大量按 `$(TargetFramework)` 条件化的属性组/引用，改属性时先确认两个 TFM 下的行为。
+
+## 本地化（汉化）约定
+
+- **用户可见字符串一律用简体中文**：控件文本、消息框、气泡通知、托盘菜单、状态栏、`AppLog.Line` 日志、`UpdateErrors.cs` 错误描述。
+- **只改字符串字面量，不改代码标识符/变量名**（用户明确要求过）。不要为汉化引入包装常量或替换 `Updater.ApplicationTitle` 之类的外部库属性引用。
+- 有意保留英文的部分：`.ini` 配置键名、COM API 标识（如 `"Offline Sync Service"`、`"wuauserv"`）、`ClientApplicationID`、GPL 版权声明、以及来自微软服务器的更新标题/类别（无法本地化）。
+- 消息框与窗体标题栏显示英文产品名 "Windows Update Mini Tool"（外部库 `SergiyE.Common` 的 `Updater.ApplicationTitle`，源码不在本仓库）——这是接受现状，勿反复尝试修改。
+- 源文件均为 UTF-8 **带 BOM**，新增/修改含中文的文件时保持，否则 MSBuild 可能按错误码页编译。
+- ComboBox 选项（星期、重启延迟等）已汉化，程序按 `SelectedIndex` 存取配置而非文本，改文案不影响兼容性。
 
 ## 运行时行为（改动时注意）
 

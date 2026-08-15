@@ -69,9 +69,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <!-- 锁定到 1.0.9643：9644+ 的 net472 库被掏空（大量方法为 throw NotImplementedException 空壳），运行即崩 -->
-    <PackageReference Include="SergiyE.Common" Version="1.0.9643" />
-    <PackageReference Include="SergiyE.Common.UI" Version="1.0.9643" />
+    <!-- 锁定到 1.0.9577：9644+ 的 net472 库被掏空（空壳方法），9643 起 Updater 加了 "Demo version" 启动限制 -->
+    <PackageReference Include="SergiyE.Common" Version="1.0.9577" />
+    <PackageReference Include="SergiyE.Common.UI" Version="1.0.9577" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
     <PackageReference Include="Costura.Fody" Version="4.1.0">

@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using sergiye.Common;
 using winUpdateMiniTool.Common;
 using WUApiLib;
+using StringCollection = System.Collections.Specialized.StringCollection;
 
 namespace winUpdateMiniTool;
 
@@ -331,7 +332,7 @@ internal class WuAgent {
     try {
       //string query = "(IsInstalled = 0 and IsHidden = 0) or (IsInstalled = 1 and IsHidden = 0) or (IsHidden = 1)";
       //string query = "(IsInstalled = 0 and IsHidden = 0) or (IsInstalled = 1 and IsHidden = 0) or (IsHidden = 1) or (IsInstalled = 0 and IsHidden = 0 and DeploymentAction='OptionalInstallation') or (IsInstalled = 1 and IsHidden = 0 and DeploymentAction='OptionalInstallation') or (IsHidden = 1 and DeploymentAction='OptionalInstallation')";
-      var query = OSHelper.IsWindows7OrLower
+      var query = OperatingSystemHelper.IsWindows7OrLower
           ? "(IsInstalled = 0 and IsHidden = 0) or (IsInstalled = 1 and IsHidden = 0) or (IsHidden = 1)"
           : "(IsInstalled = 0 and IsHidden = 0 and DeploymentAction=*) or (IsInstalled = 1 and IsHidden = 0 and DeploymentAction=*) or (IsHidden = 1 and DeploymentAction=*)";
       mSearchJob = mUpdateSearcher.BeginSearch(query, mCallback, null);
@@ -840,27 +841,32 @@ internal class WuAgent {
   }
 
   public void EnableWuAuServ(bool enable = true) {
+    ServiceController svc = new("wuauserv"); // Windows Update Service
     try {
       if (enable) {
-        if (!WinServiceHelper.IsServiceRunning("wuauserv")) {
-          WinServiceHelper.ChangeStartMode("wuauserv", ServiceStartMode.Manual);
-          WinServiceHelper.StartService("wuauserv");
+        if (svc.Status != ServiceControllerStatus.Running) {
+          WinServiceHelper.ChangeStartMode(svc, ServiceStartMode.Manual);
+          svc.Start();
         }
       }
       else {
-        if (WinServiceHelper.IsServiceRunning("wuauserv"))
-          WinServiceHelper.StopService("wuauserv");
-        WinServiceHelper.ChangeStartMode("wuauserv", ServiceStartMode.Disabled);
+        if (svc.Status == ServiceControllerStatus.Running)
+          svc.Stop();
+        WinServiceHelper.ChangeStartMode(svc, ServiceStartMode.Disabled);
       }
     }
     catch (Exception err) {
       AppLog.Line("错误：" + err.Message);
     }
+
+    svc.Close();
   }
 
   public bool TestWuAuServ() {
-
-    return WinServiceHelper.IsServiceRunning("wuauserv");
+    ServiceController svc = new("wuauserv");
+    var ret = svc.Status == ServiceControllerStatus.Running;
+    svc.Close();
+    return ret;
   }
 
   public event EventHandler<ProgressArgs> Progress;

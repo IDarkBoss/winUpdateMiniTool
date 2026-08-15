@@ -52,7 +52,7 @@ internal partial class MainForm : Form {
       notifyIcon.Visible = true;
     }
 
-    if (!OSHelper.IsRunningAsUwp())
+    if (!OperatingSystemHelper.IsRunningAsUwp())
       Text = Updater.ApplicationTitle;
 
     btnWinUpd.Text = string.Format("Windows 更新 ({0})", 0);
@@ -151,12 +151,12 @@ internal partial class MainForm : Form {
 
     if (Program.IsAutoStart())
       chkAutoRun_CheckedChanged(null, EventArgs.Empty);
-    if (OSHelper.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
+    if (OperatingSystemHelper.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
       chkAutoRun.Enabled = false;
     idleDelay = MiscFunc.ParseInt(GetConfig("IdleDelay", "20"));
     chkNoUAC.Checked = Program.IsSkipUacRun();
-    chkNoUAC.Enabled = OSHelper.IsAdministrator();
-    chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !OSHelper.IsRunningAsUwp();
+    chkNoUAC.Enabled = OperatingSystemHelper.IsAdministrator();
+    chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !OperatingSystemHelper.IsRunningAsUwp();
 
     chkOffline.Checked = MiscFunc.ParseInt(GetConfig("Offline", "0")) != 0;
     chkDownload.Checked = MiscFunc.ParseInt(GetConfig("Download", "1")) != 0;
@@ -164,8 +164,8 @@ internal partial class MainForm : Form {
     chkAutoRestart.Checked = MiscFunc.ParseInt(GetConfig("AutoRestartAfterInstall", "0")) != 0;
     cbRestartDelay.SelectedIndex = GetRestartDelayIndex(MiscFunc.ParseInt(GetConfig("AutoRestartDelay", "0")));
     UpdateAutoRestartControls();
-    if (!OSHelper.IsAdministrator()) {
-      if (OSHelper.IsRunningAsUwp()) {
+    if (!OperatingSystemHelper.IsAdministrator()) {
+      if (OperatingSystemHelper.IsRunningAsUwp()) {
         chkOffline.Enabled = false;
         chkOffline.Checked = false;
 
@@ -179,7 +179,7 @@ internal partial class MainForm : Form {
     chkMsUpd.Checked = agent.IsActive() && agent.TestService(WuAgent.MsUpdGuid);
 
     // Note: when running in the UWP sandbox we cant write the real registry even as admins
-    if (!OSHelper.IsAdministrator() || OSHelper.IsRunningAsUwp())
+    if (!OperatingSystemHelper.IsAdministrator() || OperatingSystemHelper.IsRunningAsUwp())
       foreach (Control ctl in gbxAutoUpdate.Controls)
         ctl.Enabled = false;
 
@@ -341,7 +341,7 @@ internal partial class MainForm : Form {
       var daysDue = GetAutoUpdateDue();
       if (daysDue != 0 && !agent.IsBusy()) {
         // ensure we only start a check when user is not doing anything
-        var idleTime = OSHelper.GetIdleTime();
+        var idleTime = OperatingSystemHelper.GetIdleTime();
         if (idleDelay * 60 < idleTime) {
           AppLog.Line("开始自动检查更新。");
           updateNow = true;
@@ -626,7 +626,7 @@ internal partial class MainForm : Form {
     var isValid = agent.IsValid();
     var isValid2 = isValid || chkManual.Checked;
 
-    var admin = OSHelper.IsAdministrator() || !OSHelper.IsRunningAsUwp();
+    var admin = OperatingSystemHelper.IsAdministrator() || !OperatingSystemHelper.IsRunningAsUwp();
 
     var enable = agent.IsActive() && !busy;
     btnSearch.Enabled = enable;
@@ -847,7 +847,7 @@ compact.exe /CompactOS:always";
   }
 
   private void btnDownload_Click(object sender, EventArgs e) {
-    if (!chkManual.Checked && !OSHelper.IsAdministrator()) {
+    if (!chkManual.Checked && !OperatingSystemHelper.IsAdministrator()) {
       MessageBox.Show("使用 Windows Update 服务下载更新需要管理员权限。请改用\"手动\"下载。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
@@ -861,7 +861,7 @@ compact.exe /CompactOS:always";
   }
 
   private void btnInstall_Click(object sender, EventArgs e) {
-    if (!OSHelper.IsAdministrator()) {
+    if (!OperatingSystemHelper.IsAdministrator()) {
       MessageBox.Show("安装更新需要管理员权限。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
@@ -875,7 +875,7 @@ compact.exe /CompactOS:always";
   }
 
   private void btnUnInstall_Click(object sender, EventArgs e) {
-    if (!OSHelper.IsAdministrator()) {
+    if (!OperatingSystemHelper.IsAdministrator()) {
       MessageBox.Show("卸载更新需要管理员权限。", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
@@ -1207,7 +1207,7 @@ compact.exe /CompactOS:always";
       return;
     if (chkAutoRun.CheckState == CheckState.Indeterminate)
       return;
-    if (OSHelper.IsRunningAsUwp()) {
+    if (OperatingSystemHelper.IsRunningAsUwp()) {
       if (chkAutoRun.CheckState == CheckState.Checked) {
         mSuspendUpdate = true;
         chkAutoRun.CheckState = CheckState.Indeterminate;

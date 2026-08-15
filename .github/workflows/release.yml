@@ -1,0 +1,48 @@
+name: release
+
+# 推送 v* 标签时触发：完整构建三个变体并自动发布到 GitHub Release
+# 用法：git tag v1.0.0 && git push origin v1.0.0
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: windows-2022
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nuget/setup-nuget@v2
+      - uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+
+      - name: NuGet restore
+        run: nuget restore winUpdateMiniTool.sln
+
+      # 与 make.bat 一致：net472 主版本（Costura 单 exe）
+      - name: Build (net472 x64)
+        run: msbuild winUpdateMiniTool.sln /t:Rebuild /p:DebugType=None /p:Configuration=Release /p:TargetFramework=net472 /p:RuntimeIdentifier=win-x64
+
+      # net8 单文件变体：x64（.core）与 arm64（.arm64）
+      - name: Publish (net8.0-windows x64)
+        run: msbuild winUpdateMiniTool/winUpdateMiniTool.csproj /t:Publish /p:DebugType=None /p:Configuration=Release /p:TargetFramework=net8.0-windows /p:RuntimeIdentifier=win-x64 /p:SelfContained=false /p:PublishSingleFile=true /p:AssemblyName=winUpdateMiniTool.core /p:PublishDir=bin/publish/ /p:DeleteExistingFiles=false
+
+      - name: Publish (net8.0-windows arm64)
+        run: msbuild winUpdateMiniTool/winUpdateMiniTool.csproj /t:Publish /p:DebugType=None /p:Configuration=Release /p:TargetFramework=net8.0-windows /p:RuntimeIdentifier=win-arm64 /p:SelfContained=false /p:PublishSingleFile=true /p:AssemblyName=winUpdateMiniTool.arm64 /p:PublishDir=bin/publish/ /p:DeleteExistingFiles=false
+
+      - name: Collect artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          Copy-Item winUpdateMiniTool/bin/net472/win-x64/*.exe release/
+          Copy-Item winUpdateMiniTool/bin/publish/winUpdateMiniTool.core.exe release/
+          Copy-Item winUpdateMiniTool/bin/publish/winUpdateMiniTool.arm64.exe release/
+          Get-ChildItem release
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          fail_on_unmatched_files: true
+          files: release/*.exe
